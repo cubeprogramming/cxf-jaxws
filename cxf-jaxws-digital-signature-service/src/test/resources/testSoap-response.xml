@@ -1,0 +1,10 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header />
+
+    <soap:Body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+               wsu:Id="id-e9ad13f1-6996-469d-9d1e-6effdfdad13e">
+        <ns2:listFlightsResponse xmlns:ns2="http://example.org/TicketAgent.xsd">
+            <flightNumber>101</flightNumber>
+        </ns2:listFlightsResponse>
+    </soap:Body>
+</soap:Envelope>

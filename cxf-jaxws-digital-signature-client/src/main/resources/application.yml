@@ -1,0 +1,19 @@
+cxf:
+  path: /codenotfound/ws
+
+client:
+  ticketagent:
+    port: 9090
+    host_url: http://localhost
+    address: ${client.ticketagent.host_url}:${client.ticketagent.port}${cxf.path}
+    endpoint: /ticketagent
+    keystore-alias: client-keypair
+
+server:
+  port: 9091
+  endpoint: /ticket
+
+test:
+  host_url: http://localhost
+  address: ${test.host_url}:${server.port}${cxf.path}
+

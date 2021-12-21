@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<listFlightsRequest>
+    <travelDate>2012-12-13</travelDate>
+    <startCity>str1234</startCity>
+    <endCity>str1234</endCity>
+</listFlightsRequest>

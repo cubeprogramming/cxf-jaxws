@@ -1,0 +1,47 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header>
+        <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                       xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                       soap:mustUnderstand="1">
+            <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="SIG-9ff57151-0894-4e37-a1c1-1ac0e5d657fc">
+                <ds:SignedInfo>
+                    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                        <ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="soap"/>
+                    </ds:CanonicalizationMethod>
+                    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                    <ds:Reference URI="#id-7108efd9-728c-4199-b242-3871d9bf471e">
+                        <ds:Transforms>
+                            <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                        </ds:Transforms>
+                        <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                        <ds:DigestValue>/kFbUbyjnw3kXD0/9wMo+XRNVGI=</ds:DigestValue>
+                    </ds:Reference>
+                </ds:SignedInfo>
+                <ds:SignatureValue>
+                    W0lgz877HtyvBR/hSPdNav9cDzHhzDxnZ9O7Io3bGbyEPulScnsYWa+a6x+jkiGwnB9zaGNpIK5vMx4oynXpq1Z3o0ZWs5MaRkmVhGCxMnNF2IDa+QuC7MfnKtDYFxXm+WaITeLlPeiNwC4jPcb96encOnBRe80+sqJ+9xYBLXq2IYJU3c51eblNkaih27JHkS7krgZXmPNSMZK3jsV9O8xSldrjgs9DsJBCsVdh4nIUw3YoyzhgcRDgnbkl8Ns8eXPiUZ/XMVzS8Yz924Zj5OKcDUAvdK6NRva8PaiVgSyF9AaTvG/t60Ca1IDt+j/znHXcLTLGCQOXy532ChnrZQ==
+                </ds:SignatureValue>
+                <ds:KeyInfo Id="KI-d35eb70c-2774-4742-99f5-ab392aacd0f2">
+                    <wsse:SecurityTokenReference
+                            xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                            xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                            wsu:Id="STR-72f7cd5d-536a-4f76-a32c-0075fd7936c0">
+                        <ds:X509Data>
+                            <ds:X509IssuerSerial>
+                                <ds:X509IssuerName>CN=client,O=codenotfound.com</ds:X509IssuerName>
+                                <ds:X509SerialNumber>757030607</ds:X509SerialNumber>
+                            </ds:X509IssuerSerial>
+                        </ds:X509Data>
+                    </wsse:SecurityTokenReference>
+                </ds:KeyInfo>
+            </ds:Signature>
+            <wsu:Timestamp wsu:Id="TS-3e7e8954-6864-4206-a820-98128e8f2ea7">
+                <wsu:Created>2021-12-20T14:58:06.807Z</wsu:Created>
+                <wsu:Expires>2021-12-20T15:03:06.807Z</wsu:Expires>
+            </wsu:Timestamp>
+        </wsse:Security>
+    </soap:Header>
+    <soap:Body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+               wsu:Id="id-7108efd9-728c-4199-b242-3871d9bf471e">
+        <ns2:listFlightsRequest xmlns:ns2="http://example.org/TicketAgent.xsd"/>
+    </soap:Body>
+</soap:Envelope>

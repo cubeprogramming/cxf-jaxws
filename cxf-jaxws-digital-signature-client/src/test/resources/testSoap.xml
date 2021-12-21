@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tic="http://example.org/TicketAgent.xsd">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tic:listFlightsRequest>
+            <travelDate>2012-12-13</travelDate>
+            <startCity>str1234</startCity>
+            <endCity>str1234</endCity>
+        </tic:listFlightsRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

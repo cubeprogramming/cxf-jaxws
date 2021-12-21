@@ -59,7 +59,7 @@
     <wsdl:operation name="listFlights">
       <wsdl:input>
         <soap:header message="tns:listFlightsRequestHeader"
-          part="header" use="literal"></soap:header>
+                     part="header" use="literal"/>
         <soap:body parts="body" use="literal" />
       </wsdl:input>
       <wsdl:output>

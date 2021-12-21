@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="649d9ce8-5540-4810-92f8-51332b603ac7" activeEnvironment="Default" name="CxfSignTest" resourceRoot="" soapui-version="5.6.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="03162ac1-82ad-4ebd-96f7-d355180a8029" wsaVersion="NONE" name="TicketAgentSoap" type="wsdl" bindingName="{http://example.org/TicketAgent.wsdl11}TicketAgentSoap" soapVersion="1_1" anonymous="optional" definition="file:/Users/cube/OneDrive%20-%20Sysco%20AS/source/Java/cxf-jaxws/cxf-jaxws-digital-signature/src/main/resources/wsdl/ticketagent.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/cube/OneDrive%20-%20Sysco%20AS/source/Java/cxf-jaxws/cxf-jaxws-digital-signature/src/main/resources/wsdl/ticketagent.wsdl"><con:part><con:url>file:/Users/cube/OneDrive%20-%20Sysco%20AS/source/Java/cxf-jaxws/cxf-jaxws-digital-signature/src/main/resources/wsdl/ticketagent.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://example.org/TicketAgent.wsdl11" xmlns:tns="http://example.org/TicketAgent.wsdl11" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsTicketAgent="http://example.org/TicketAgent.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://example.org/TicketAgent.xsd">
+      <xs:element name="listFlightsRequest" type="xsTicketAgent:tListFlights"/>
+      <xs:complexType name="tListFlights">
+        <xs:sequence>
+          <xs:element name="travelDate" type="xs:date"/>
+          <xs:element name="startCity" type="xs:string"/>
+          <xs:element name="endCity" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="listFlightsResponse" type="xsTicketAgent:tFlightsResponse"/>
+      <xs:complexType name="tFlightsResponse">
+        <xs:sequence>
+          <xs:element name="flightNumber" type="xs:integer" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="listFlightsRequest">
+    <wsdl:part name="body" element="xsTicketAgent:listFlightsRequest"/>
+  </wsdl:message>
+  <wsdl:message name="listFlightsResponse">
+    <wsdl:part name="body" element="xsTicketAgent:listFlightsResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="TicketAgent">
+    <wsdl:operation name="listFlights">
+      <wsdl:input message="tns:listFlightsRequest"/>
+      <wsdl:output message="tns:listFlightsResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TicketAgentSoap" type="tns:TicketAgent">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listFlights">
+      <wsdl:input>
+        <soap:body parts="body" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="body" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints/><con:operation id="58ce819b-a33f-4ef1-a193-ba871325ae9d" isOneWay="false" action="" name="listFlights" bindingOperationName="listFlights" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="f7d0ea3f-fcf9-4d7b-89b0-59a922ac4e24" name="Request 1" outgoingWss="SignBody" incomingWss="Incoming"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/codenotfound/ws/ticketagent</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tic="http://example.org/TicketAgent.xsd">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tic:listFlightsRequest>
+         <travelDate>2012-12-13</travelDate>
+         <startCity>str1234</startCity>
+         <endCity>str1234</endCity>
+      </tic:listFlightsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://example.org/TicketAgent.wsdl11/TicketAgent/listFlightsRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer><con:crypto><con:source>/Users/cube/OneDrive - Sysco AS/source/Java/cxf-jaxws/cxf-jaxws-digital-signature/src/main/resources/jks/client-keystore.jks</con:source><con:password>client-keystore-p455w0rd</con:password><con:type>KEYSTORE</con:type></con:crypto><con:crypto><con:source>/Users/cube/OneDrive - Sysco AS/source/Java/cxf-jaxws/cxf-jaxws-digital-signature/src/main/resources/jks/client-truststore.jks</con:source><con:password>client-truststore-p455w0rd</con:password><con:type>TRUSTSTORE</con:type></con:crypto><con:incoming><con:name>Incoming</con:name><con:signatureCrypto>client-truststore.jks</con:signatureCrypto><con:decryptPassword>client-truststore-p455w0rd</con:decryptPassword></con:incoming><con:outgoing><con:name>SignBody</con:name><con:entry type="Timestamp"><con:configuration><timeToLive>60</timeToLive><strictTimestamp>true</strictTimestamp></con:configuration></con:entry><con:entry type="Signature" username="client-keypair" password="client-key-p455w0rd"><con:configuration><crypto>client-keystore.jks</crypto><keyIdentifierType>1</keyIdentifierType><signatureAlgorithm/><signatureCanonicalization/><useSingleCert>false</useSingleCert><prependSignature>true</prependSignature><digestAlgorithm/><customTokenValueType/><customTokenId/></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
