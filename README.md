@@ -1,8 +1,9 @@
 # cxf-jaxws
 
-[![Build Status](https://travis-ci.org/code-not-found/cxf-jaxws.svg?branch=master)](https://travis-ci.org/code-not-found/cxf-jaxws)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+This is fork of [https://github.com/code-not-found/cxf-jaxws.git](https://github.com/code-not-found/cxf-jaxws.git) with a lot of customization and modifications.
 
-This repository contains the source code for the cxf-jaxws examples posted on [https://www.codenotfound.com/cxf-jaxws/](https://www.codenotfound.com/cxf-jaxws/)
+Some project have been modernized and some completely revised.
+From previous: `cxf-jaxws-digital-signature` project, two additional project have been created:
 
-In case of questions or remarks please leave a comment in the respective blog post. Thanks!
+- `cxf-jaxws-digital-signature-service` -  contains Web Service that verifies digitally signed SOAP message and return digitally signed result
+- `cxf-jaxws-digital-signature-client` -  contains Web Service that accepts unsigned SOAP message, signs it and sends it to `cxf-jaxws-digital-signature-service` Web Service
