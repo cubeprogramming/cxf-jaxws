@@ -7,6 +7,9 @@ import javax.xml.ws.Endpoint;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.cxf.transport.common.gzip.GZIPFeature;
+import org.apache.cxf.transport.common.gzip.GZIPInInterceptor;
+import org.apache.cxf.transport.common.gzip.GZIPOutInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
@@ -18,8 +21,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EndpointConfig {
 
-  @Value("${server.ticketagent.keystore-alias}")
-  private String keystoreAlias;
+//  @Value("${server.ticketagent.keystore-alias}")
+  @Value("${server.ssl.key-alias}")
+  private String keyAlias;
 
   @Autowired
   private Bus bus;
@@ -29,6 +33,11 @@ public class EndpointConfig {
     EndpointImpl endpoint =
         new EndpointImpl(bus, new TicketAgentImpl());
     endpoint.publish("/ticketagent");
+
+    GZIPFeature feature = new GZIPFeature();
+    feature.setThreshold(0);
+    feature.setForce(true);
+    feature.initialize(endpoint, bus);
 
     // add the WSS4J IN interceptor to verify the signature on the request message
     endpoint.getInInterceptors().add(serverWssIn());
@@ -64,7 +73,7 @@ public class EndpointConfig {
     serverOutProps.put(WSHandlerConstants.ACTION,
         WSHandlerConstants.TIMESTAMP + " "
             + WSHandlerConstants.SIGNATURE);
-    serverOutProps.put(WSHandlerConstants.USER, keystoreAlias);
+    serverOutProps.put(WSHandlerConstants.USER, keyAlias);
     serverOutProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
         ServerCallbackHandler.class.getName());
     serverOutProps.put(WSHandlerConstants.SIG_PROP_FILE,

@@ -1,12 +1,23 @@
+cxf:
+  path: /codenotfound/ws
+
 client:
   ticketagent:
-    address: http://localhost:9090/codenotfound/ws/ticketagent
+    port: 9090
+    host_url: https://localhost
+    address: ${client.ticketagent.host_url}:${client.ticketagent.port}${cxf.path}
+    endpoint: /ticketagent
     keystore-alias: client-keypair
+    trust-store: classpath:jks/client-truststore.jks
+    trust-store-password: client-truststore-p455w0rd
 
 server:
   port: 9090
-  ticketagent:
-    keystore-alias: server-keypair
-
-cxf:
-  path: /codenotfound/ws
+  compression:
+    enabled: true
+    mime-types: text/xml, text/css, text/javascript, application/json
+  ssl:
+    key-store: classpath:jks/server-keystore.jks
+    key-store-password: server-keystore-p455w0rd
+    key-alias: server-keypair
+    key-password: server-key-p455w0rd
