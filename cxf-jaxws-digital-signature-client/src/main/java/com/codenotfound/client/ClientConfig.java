@@ -1,11 +1,25 @@
+// This is client configuration with both digital signature and HTTPs encryption
+
 package com.codenotfound.client;
 
+import java.io.IOException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
+import org.apache.cxf.configuration.security.FiltersType;
+import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.ext.logging.LoggingInInterceptor;
 import org.apache.cxf.ext.logging.LoggingOutInterceptor;
+import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.transport.common.gzip.GZIPInInterceptor;
+import org.apache.cxf.transport.common.gzip.GZIPOutInterceptor;
+import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
@@ -13,6 +27,10 @@ import org.example.ticketagent_wsdl11.TicketAgent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 @Configuration
 public class ClientConfig {
@@ -26,6 +44,12 @@ public class ClientConfig {
   @Value("${client.ticketagent.keystore-alias}")
   private String keystoreAlias;
 
+  @Value("${client.ticketagent.trust-store}")
+  private Resource trustStoreResource;
+
+  @Value("${client.ticketagent.trust-store-password}")
+  private String trustStorePassword;
+
   @Bean(name = "ticketAgentProxyBean")
   public TicketAgent ticketAgent() {
     JaxWsProxyFactoryBean jaxWsProxyFactoryBean =
@@ -38,6 +62,13 @@ public class ClientConfig {
     // add the WSS4J IN interceptor to verify the signature on the response message
     jaxWsProxyFactoryBean.getInInterceptors().add(clientWssIn());
 
+    // add compression
+    GZIPOutInterceptor compressor = new GZIPOutInterceptor();
+    compressor.setThreshold(0);
+    compressor.setForce(true); //For some reason no compression happens unless forced
+    jaxWsProxyFactoryBean.getInInterceptors().add(new GZIPInInterceptor());
+    jaxWsProxyFactoryBean.getOutInterceptors().add(compressor);
+
     // log the request and response messages
     jaxWsProxyFactoryBean.getInInterceptors()
         .add(loggingInInterceptor());
@@ -46,6 +77,68 @@ public class ClientConfig {
 
     return (TicketAgent) jaxWsProxyFactoryBean.create();
   }
+
+  @Bean
+  public HTTPConduit ticketAgentConduit()
+          throws NoSuchAlgorithmException, KeyStoreException,
+          CertificateException, IOException {
+    Client client = ClientProxy.getClient(ticketAgent());
+
+    HTTPConduit httpConduit = (HTTPConduit) client.getConduit();
+    httpConduit.setTlsClientParameters(tlsClientParameters());
+
+    return httpConduit;
+  }
+
+
+  @Bean
+  public TLSClientParameters tlsClientParameters()
+          throws NoSuchAlgorithmException, KeyStoreException,
+          CertificateException, IOException {
+    TLSClientParameters tlsClientParameters =
+            new TLSClientParameters();
+    tlsClientParameters.setSecureSocketProtocol("TLS");
+    // should NOT be used in production
+    tlsClientParameters.setDisableCNCheck(true);
+    tlsClientParameters.setTrustManagers(trustManagers());
+    tlsClientParameters.setCipherSuitesFilter(cipherSuitesFilter());
+
+    return tlsClientParameters;
+  }
+
+
+  @Bean
+  public TrustManager[] trustManagers()
+          throws NoSuchAlgorithmException, KeyStoreException,
+          CertificateException, IOException {
+    TrustManagerFactory trustManagerFactory = TrustManagerFactory
+            .getInstance(TrustManagerFactory.getDefaultAlgorithm());
+    trustManagerFactory.init(trustStore());
+
+    return trustManagerFactory.getTrustManagers();
+  }
+
+
+  @Bean
+  public KeyStore trustStore() throws KeyStoreException,
+          NoSuchAlgorithmException, CertificateException, IOException {
+    KeyStore trustStore = KeyStore.getInstance("JKS");
+    trustStore.load(trustStoreResource.getInputStream(),
+            trustStorePassword.toCharArray());
+
+    return trustStore;
+  }
+
+
+  @Bean
+  public FiltersType cipherSuitesFilter() {
+    FiltersType filter = new FiltersType();
+    filter.getInclude().add("TLS_ECDHE_RSA_.*");
+    filter.getInclude().add("TLS_DHE_RSA_.*");
+
+    return filter;
+  }
+
 
   @Bean
   public Map<String, Object> clientOutProps() {
@@ -89,6 +182,8 @@ public class ClientConfig {
 
     return clientWssIn;
   }
+
+
 
   @Bean
   public LoggingInInterceptor loggingInInterceptor() {

@@ -1,6 +1,8 @@
 package com.codenotfound;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 
 import io.restassured.RestAssured;
 import io.restassured.path.xml.XmlPath;
@@ -61,13 +64,16 @@ public class SpringCxfClientAppTests {
 //    String randomUuid = IOUtils.toString(fileReader).replaceAll(Pattern.quote("RANDOM_UUID"), UUID.randomUUID().toString());
 //    String requestContent = randomUuid.replaceAll(Pattern.quote("DATE_SENT"), DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar() ).toString());
     String requestContent = IOUtils.toString(fileReader);
+    byte[] compressedContent = compress(requestContent);
 
     log.debug(requestContent);
 
     Response response=RestAssured.given()
             .header("Content-Type", "text/xml")
+            .header("Content-Encoding", "gzip")
             .and()
-            .body(requestContent)
+//            .body(requestContent)
+            .body(compressedContent)
             .when()
             .post("")
             .then()
@@ -81,4 +87,16 @@ public class SpringCxfClientAppTests {
     log.debug("Response: " +  flightNumber);
     assertThat(flightNumber).isEqualTo("101");
   }
+
+  public static byte[] compress(String data) throws IOException {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
+    GZIPOutputStream gzip = new GZIPOutputStream(bos);
+    gzip.write(data.getBytes());
+    gzip.close();
+    byte[] compressed = bos.toByteArray();
+    bos.close();
+    return compressed;
+  }
+
+
 }

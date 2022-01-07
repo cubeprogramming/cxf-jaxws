@@ -11,6 +11,12 @@
 
   <!-- APPENDERS -->
   <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout
+              pattern="%style{%d{ISO8601}}
+                    %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
+    </Console>
+
     <RollingFile name="APP_LOG_FILE" fileName="${logFile}.log"
       filePattern="${logFile}.%d{yyyy-MM-dd}.log">
       <TimeBasedTriggeringPolicy interval="1"
@@ -30,6 +36,12 @@
 
   <!-- LOGGERS -->
   <Loggers>
+    <Logger name="com.codenotfound.SpringCxfWebServiceApp"
+            level="debug"
+            additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+
     <Logger name="com.codenotfound.soap.http.cxf" level="INFO" />
 
     <Logger name="org.springframework" level="WARN" />
@@ -42,8 +54,9 @@
       <AppenderRef ref="WS_LOG_FILE" />
     </Logger>
 
-    <Root level="WARN">
-      <AppenderRef ref="APP_LOG_FILE" />
+    <Root level="DEBUG">
+      <AppenderRef ref="Console"/>
+<!--      <AppenderRef ref="APP_LOG_FILE" />-->
     </Root>
   </Loggers>
 

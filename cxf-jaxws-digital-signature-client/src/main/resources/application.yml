@@ -4,14 +4,19 @@ cxf:
 client:
   ticketagent:
     port: 9090
-    host_url: http://localhost
+    host_url: https://localhost
     address: ${client.ticketagent.host_url}:${client.ticketagent.port}${cxf.path}
     endpoint: /ticketagent
     keystore-alias: client-keypair
+    trust-store: classpath:jks/client-truststore.jks
+    trust-store-password: client-truststore-p455w0rd
 
 server:
   port: 9091
   endpoint: /ticket
+  compression:
+      enabled: true
+      mime-types: text/xml, text/css, text/javascript, application/json
 
 test:
   host_url: http://localhost
